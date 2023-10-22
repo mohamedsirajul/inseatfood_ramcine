@@ -1,0 +1,23 @@
+<div *ngFor="let item of data.dataitems.items; let i = index" class="example-container">
+    <div *ngIf="item.flavors && item.flavors.length > 0">
+        <label for="flavor{{i}}" class="form-label mt-3" style="color: black;">Select {{ item.item }} Flavor</label>
+        <select name="flavor{{i}}" [(ngModel)]="flavorValues[i]" (change)="onSelectionChange(flavorValues[i])" class="form-select" style="border: 1px solid black; margin-left: 6.5%; width: 85%;"  aria-label="Default select example">
+          <option *ngFor="let flavor of item.flavors; let j = index" [value]="flavor" [selected]="j === 0">{{ flavor }}</option>
+        </select>
+    </div>
+    <div *ngIf="!item.flavors || item.flavors.length === 0">
+      <!-- Static content for items without flavors -->
+      <p class="form-label mt-3" style="color: black;">{{ item.item }} doesn't have flavors.</p>
+      <!-- You can add more static information as needed -->
+    </div>
+</div>
+
+<!-- <label class="form-label mt-3" style="color: black;">Add Additional Data .. Not Required</label>
+<select class="form-select" [(ngModel)]="selectedAdditionalData" style="border: 1px solid black; margin-left: 6.5%; width: 85%;">
+  <option *ngFor="let option of additionalData"  [value]="option">{{ option }}</option>
+</select> -->
+
+<div mat-dialog-actions>
+    <button mat-button (click)="close()">Close</button>
+    <button mat-raised-button color="warn"  (click)="okey()">OK</button>
+</div>

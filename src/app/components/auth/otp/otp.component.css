@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative; /* Add relative positioning to the main container */
+}
+
+/* Styles for OTP input container */
+.otp-input-container {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust centering */
+  max-width: 300px; /* Set a maximum width for the OTP input */
+}
+
+/* Adjust styles for OTP input */
+.ng-otp-input {
+  /* Add your desired styles for the OTP input here */
+  width: 100%; /* Make the OTP input width 100% */
+}
+
+/* Adjust styles for Verify OTP button */
+.order-btn {
+  /* Add your desired styles for the button here */
+  padding: 10px 20px;
+  font-size: 18px;
+  margin-top: 20px; /* Keep the margin top */
+  background: #ff2c2cd6;
+  border: black;
+  padding: 11px 13px 8px;
+  border-radius: 7px;
+}
+.ng-otp-input-static {
+  /* Add your desired styles for the OTP input here */
+  max-width: 100%; /* Set a maximum width for the OTP input */
+  margin: 20px auto; /* Adjust margins to center the input */
+  position: relative;
+  display: block;
+  flex: none;
+  /* Add any other specific styles you need */
+}

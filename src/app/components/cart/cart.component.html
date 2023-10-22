@@ -1,0 +1,137 @@
+<div *ngIf="isScreenLarge">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<div class="mob-nav">
+    <nav class="navbar navbar-expand-lg text-uppercase " id="mainNav">
+        <div class="container">
+            <div>
+                <a routerLink="/items" style="text-decoration:none;color:white;font-size:25px;">
+                    <span class="bi-icon-circle">
+                        <i class="bi bi-arrow-left-circle-fill"></i>
+                    </span>
+                </a>
+                <a routerLink="/carts" style="color:white !important" class="navbar-brand">InSeatFood</a>
+            </div>
+
+            <button type="button" class="cart">
+                <span>
+                    <mat-icon style="font-size:25px;color:white;margin-right:8px;" routerLink="/cart">shopping_cart</mat-icon>
+                </span>
+                <span id="cart_value" class="icon-cart__badge">{{counter}}</span>
+            </button>
+        </div>
+        <br>
+    </nav>
+</div>
+
+<div class="container mt-5" *ngIf="cartItems.length != 0">
+
+    
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">S.no</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of cartItems; let i =index ">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{item.name}}</td>
+                    <td>{{ item.quantity }}({{ item.new_price }})</td>
+                    <td>{{ item.new_price * item.quantity }}</td>
+                    <td>
+                        <button mat-button class="white-icon delete-button" (click)="removeItem(item)">
+                            <mat-icon matTooltip="Delete">delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Total amount</td>
+                    <td>
+                        {{totalAmount}}
+                    </td>
+                    <td>
+                      <button class="btn btn-danger" style="font-size: 8px;" (click)="emptyCart()">Empty Cart</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center">
+        <a>
+            <button type="submit" class="btn mb-4 order-btn btn-primary" (click)="confirmOrder()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-cursor" viewBox="0 0 16 16">
+                    <path
+                        d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
+                </svg> Confirm order
+            </button>
+        </a>
+    </div>
+    <div *ngIf="data_Response == 'next' "><app-payment></app-payment></div>
+
+
+    <section id="combo" *ngIf="totalAmount >= 220" >
+        <div class="container mt-2" style="margin-top: -40px !important; margin-bottom: 74px;">
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-3 mt-3">
+            <ng-container *ngFor="let item of filterCategory ">
+              <div class="col" [@cardAnimation]>
+                <div class="card shadow-sm zoom car1">
+                  <div class="card-body mt-2" style="height: 240px; width: 100%">
+                    <div>
+                      <img src="{{ item.image }}" class="img-fluid ml-5 card_img">
+                    </div>
+    
+                    <div style="text-align: left;">
+                      <h3 class="mr-5" style="font-weight: bold; font-size: 14px; color: white; margin-top: 10px;">
+                        {{ item.name }}
+                      </h3>
+                      <br>
+                      <h6 class="" style="color: white; margin-top: -30px;">
+                        <!-- <s>Rs: {{item.old_price}}/</s> -->
+                        <strong>&nbsp;&nbsp;Rs:{{ item.new_price }}/-</strong>
+                      </h6>
+                      <br>
+                    </div>
+                    <div class="counter" style="margin-top: -71px;">
+                      <button class="minus" (click)="decreaseCounter(item)">-</button>
+                      <span class="result">{{ item.quantity }}</span>
+                      <button class="plus" (click)="increaseCounter(item)">+</button>
+                    </div>
+                    <button mat-raised-button class="btn btn-primary" style="width: 100%;" *ngIf="item.quantity  > 0" (click)="addToCart(item)" >Add Additional</button>
+                    <!-- <button mat-raised-button class="btn btn-primary" style="width: 100%;" *ngIf="item.quantity > 0" (click)="addToCart(item)"  >Choose Flavor</button> -->
+    
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>      
+        </div>
+      </section>
+</div>
+
+<ng-container *ngIf="cartItems.length === 0">
+    <div class="container">
+        <div class="cards">
+            <h5 class="card-title">My Cart</h5>
+        </div>
+        <div class="center">
+            <img src="./assets/emptycart.gif" style="margin-left: 15px;">
+            <h4>Your cart is empty!</h4>
+            <h6>Add item to it now</h6>
+            <button mat-raised-button routerLink="/items" class="btn btn-primary">Add Items</button>
+        </div>
+    </div>
+</ng-container>
+
+</div>
+
+

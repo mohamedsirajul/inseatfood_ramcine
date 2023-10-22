@@ -1,0 +1,106 @@
+
+
+<body data-aos-easing="ease-out-back" data-aos-duration="1000" data-aos-delay="0">
+    <main>
+        <div class="mob-nav">
+            <nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
+                <div class="container">
+                  <div>
+                    <!-- <a routerLink="/order" style="text-decoration:none;color:white;font-size:25px;">
+                        <span class="bi-icon-circle">
+                            <i class="bi bi-arrow-left-circle-fill"></i>
+                        </span>
+                    </a> -->
+                    <a style="color:white !important" class="navbar-brand">InSeatFood</a>
+                  </div>
+                </div>
+                <br>
+            </nav>
+        </div>
+        <div class="mt-2 card outer-card text-center" *ngIf="hideResponse">
+
+            <div class="container px-4">
+            <div class="">
+                <form [formGroup]="userDetailsForm" (ngSubmit)="submitForm()" style="margin: 0px;">
+                    <div class="mb-1">
+                      <label for="username" class="form-label text-white mt-3">Enter Order Number</label>
+                      <input type="text" class="form-control" formControlName="order_no" id="username">
+                      <div *ngIf="order_no?.invalid && (order_no?.dirty || order_no?.touched)" class="error-text">Order Num is required.</div>
+                    </div>
+                  
+                    <div class="mb-3">
+                      <label for="number" class="form-label text-white mt-3">Enter mobile number</label>
+                      <input type="text" class="form-control" formControlName="number" (keydown)="validateNumberInput($event)" id="number" maxlength="10">
+                      <div *ngIf="number?.invalid && number?.hasError('required') && (number?.dirty || number?.touched)" class="error-text">Mobile Number is required.</div>
+                      <div *ngIf="number?.invalid && number?.hasError('pattern') && (number?.dirty || number?.touched)" class="error-text">Number must be 10 digits.</div>
+                      <div id="msg" class="form-text note-text text-white">NOTE: We'll never share the number with anyone.</div>
+                    </div>
+                  
+                    <button type="submit" class="btn mb-4 order-btn btn-primary" [disabled]="!userDetailsForm.valid">Result</button> 
+                  </form>                  
+            </div>
+          </div>
+        </div>
+
+
+        <div class="container mt-5"  *ngIf="showResponse">
+          <div class="row">
+            <h2 style="color: #929292; font-size: 15px;  margin-left: -8px;">Order Number : {{ord_no}}</h2>
+            <h2 style="color: #929292; font-size: 15px; margin-left: -8px;">User Id : {{UserId}}</h2> 
+           <h2 style="color: #929292; font-size: 15px; margin-left: -8px;">Transaction Id : {{TransactionId}}</h2>
+
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th scope="col">S.no</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Qty</th>
+                          <th scope="col">Amount</th>
+                          <!-- <th scope="col">Action</th> -->
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let item of productDetails; let i =index ">
+                          <th scope="row">{{i+1}}</th>
+                          <td>{{item.product_name}}</td>
+                          <td>{{ item.product_quantity }}({{ item.product_price }})</td>
+                          <td>{{ item.product_amt }}</td>
+                          <!-- <td>product_amt
+                              <button mat-button class="white-icon delete-button" (click)="removeItem(item)">
+                                  <mat-icon matTooltip="Delete">delete</mat-icon>
+                              </button>
+                          </td> -->
+                      </tr>
+                      <tr>
+                          <th scope="row"></th>
+                          <td colspan="2">Total amount</td>
+                          <td>
+                              {{totalAmount}}
+                          </td>
+                          <!-- <td>
+                            <button class="btn btn-danger" style="font-size: 8px;" (click)="emptyCart()">Empty Cart</button>
+                          </td> -->
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      
+          <!-- <div class="text-center">
+              <a>
+                  <button type="submit" class="btn mb-4 order-btn btn-primary" (click)="confirmOrder()">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-cursor" viewBox="0 0 16 16">
+                          <path
+                              d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103zM2.25 8.184l3.897 1.67a.5.5 0 0 1 .262.263l1.67 3.897L12.743 3.52 2.25 8.184z" />
+                      </svg> Confirm order
+                  </button>
+              </a>
+          </div> -->
+      </div>
+        <!-- Add the progress spinner -->
+        <div class="progress-container" *ngIf="loading">
+            <mat-progress-spinner class="progress-spinner" mode="indeterminate"></mat-progress-spinner>
+        </div>
+      </main>      
+</body>
+

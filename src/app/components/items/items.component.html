@@ -1,0 +1,179 @@
+<div *ngIf="isScreenLarge">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- <div class="mob-nav">
+     <nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
+         <div class="container">
+          
+          <div *ngIf="!showSearch">
+            <a style="color:white !important" class="navbar-brand">InSeatFood</a>
+          </div>
+          <div class="search-container" [@expandSearch]="showSearch">
+            <div class="search" *ngIf="showSearch">
+              <input class="seartbox" type="text" placeholder="Search..." [(ngModel)]="searchkey" >
+            </div>
+            <mat-icon
+              style="font-size:25px;color:white;"
+              (click)="toggleSearch()"
+              class="search-icon"
+            >
+              search
+            </mat-icon>
+            <button type="button" class="cart">
+              <span>
+                <mat-icon style="font-size:25px;color:white;" routerLink="/cart">shopping_cart</mat-icon>
+              </span>
+              <span id="cart_value" class="icon-cart__badge">{{ counter }}</span>
+            </button>
+          </div>
+         </div>
+         <br>
+     </nav>
+ </div> -->
+ <mat-toolbar class="main-header mat-elevation-z4" [class.hidden]="toggleSearch">
+  <div class="mob-nav">
+    <nav class="navbar navbar-expand-lg text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+         <div *ngIf="!showSearch">
+           <a style="color:white !important" class="navbar-brand">Inseatfood</a>
+         </div>
+         <div fxFlex></div>
+         <span class="example-spacer"></span>
+          <button mat-icon-button  (click)="openSearch()">
+              <mat-icon style="font-size:25px;color:white;">search</mat-icon>
+          </button>
+           <button type="button" class="cart">
+             <span>
+               <mat-icon style="font-size:25px;color:white;" routerLink="/cart">shopping_cart</mat-icon>
+             </span>
+             <span id="cart_value" class="icon-cart__badge">{{ counter }}</span>
+           </button>
+         </div>
+        <br>
+    </nav>
+</div>
+</mat-toolbar>
+
+<mat-toolbar class="search-block " [class.active]="toggleSearch">
+		<mat-toolbar-row style="padding: 0 5px;">
+			<button class="search-icon" mat-icon-button disabled>
+        <mat-icon>search</mat-icon>
+      </button>
+      <input class="search-control" type="text" placeholder="Search" [(ngModel)]="searchText" (keyup)="search($event)" >
+      <button mat-icon-button (click)="searchClose()">
+        <mat-icon color="white">close</mat-icon>
+      </button> 
+      <button type="button" class="cart">
+        <span>
+          <mat-icon style="font-size:25px;color:white;" routerLink="/cart" >shopping_cart</mat-icon>
+        </span>
+        <span id="cart_value" class="icon-cart__badge">{{ counter }}</span>
+      </button> 
+  </mat-toolbar-row>
+  </mat-toolbar>
+
+
+
+  
+<nav class="nav scrollmenu"  style="margin-top: 80px;">
+<div class="scrollmenu">
+
+<div class="nav-body" (click)="filter('Combo')">
+    <!-- <a class="nav-link text-white">
+        <img class="nav-img" src="assets/images/comboss.jpg">
+    </a> -->
+    <span class="nav-text" style="margin-left: 20px;">All Combos</span>
+</div>
+
+<!-- <div class="nav-body">
+  <a class="nav-link text-white" (click)="filter('Ice Cream')">
+      <img class="nav-img" src="assets/images/icecream.jpg">
+  </a>
+  <span class="nav-text">Ice Creams</span>
+</div>
+<div class="nav-body">
+    <a class="nav-link text-white" (click)="filter('Beverages')">
+        <img class="nav-img" src="assets/images/bevarages.jpg">
+    </a>
+    <span class="nav-text">Bevarages</span>
+</div>
+<div class="nav-body">
+    <a class="nav-link text-white " (click)="filter('Snacks')">
+      <img class="nav-img" src="assets/images/snacks.jpg"></a>
+    <span class="nav-text">Snacks</span>
+</div>
+<div class="nav-body" (click)="filter('Popcorn')">
+    <a class="nav-link text-white"><img class="nav-img" src="assets/images/popcorn.jpg"></a>
+    <span class="nav-text">Popcorns</span>
+</div> -->
+</div>
+</nav>
+<span style="color:rgba(255, 255, 255, 2);font-size:10px;">
+<hr />
+</span>
+
+<div class="ss">
+  <!-- Show the Veg image when checked is true -->
+  <img *ngIf="checked" width="27" height="27" src="https://img.icons8.com/fluency/48/vegetarian-food-symbol.png" alt="vegetarian-food-symbol"/>
+
+  <!-- Show the Non Veg image when checked is false -->
+  <img *ngIf="!checked" width="27" height="27" src="https://img.icons8.com/fluency/48/non-vegetarian-food-symbol.png" alt="non-vegetarian-food-symbol"/>
+
+  <span class="nav-text">{{ checked ? 'Veg' : 'Non Veg' }}</span>
+  <mat-slide-toggle
+  class="example-margin"
+  [color]="color"
+  [(ngModel)]="checked"
+  [disabled]="disabled"
+  (change)="filter('')">
+</mat-slide-toggle>
+</div>
+
+
+<section id="combo" >
+    <div class="container mt-2" style="margin-top: 30px !important; margin-bottom: 74px;">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-3 mt-3">
+        <ng-container *ngFor="let item of filterCategory | filter: searchText ; let i = index">
+          <div class="col" [@cardAnimation]>
+            <div class="card shadow-sm zoom car1">
+              <div class="card-body mt-2" style="height: 320px; width: 100%">
+                <div>
+                  <img src="{{ item.image }}" class="img-fluid ml-5 card_img">
+                </div>
+
+                <div style="text-align: left;">
+                  <h3 class="mr-5" style="font-weight: bold; font-size: 14px; color: white; margin-top: 10px;">
+                    {{ item.name }}
+                  </h3>
+                  <br>
+                  <h6 class="" style="color: white; margin-top: -30px;">
+                    <s>Rs: {{item.old_price}}/</s>
+                    <strong>&nbsp;&nbsp;Rs:{{ item.new_price }}/-</strong>
+                  </h6>
+                  <br>
+                </div>
+                <div class="counter" style="margin-top: -71px;">
+                  <button class="minus" (click)="decreaseCounter(item)">-</button>
+                  <span class="result">{{ item.quantity }}</span>
+                  <button class="plus" (click)="increaseCounter(item)">+</button>
+                </div>
+                <button mat-raised-button class="btn btn-primary" style="width: 100%;" *ngIf="item.quantity  > 0" (click)="Add_openDialog(item)" >Choose Flavor</button>
+                <!-- <button mat-raised-button class="btn btn-primary" style="width: 100%;" *ngIf="item.quantity > 0" (click)="addToCart(item)"  >Choose Flavor</button> -->
+
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>      
+    </div>
+  </section>
+  <br>
+  <footer class="footer" *ngIf="counter >= 1">
+    <div class="container">
+        <a routerLink="/cart">
+            <h3 class="text-white fixed-bottom text-center  p-3" style="background-color:red;font-weight:bold;margin-bottom:-5px !important;">Buy Now</h3>
+        </a> 
+    </div>
+</footer>
+</div>

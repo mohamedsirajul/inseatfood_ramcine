@@ -1,0 +1,30 @@
+<body data-aos-easing="ease-out-back" data-aos-duration="1000" data-aos-delay="0">
+    <main>
+        <div class="mt-2 card outer-card text-center">
+          <div class="container px-4">
+            <img src="assets/img/poster.jpg" class="img-fluid border rounded-3 shadow-lg mt-5 mb-4" alt="Example image" width="250" height="60" loading="lazy">
+          </div>
+          <div class="container px-4">
+            <div class="">
+              <form [formGroup]="userDetailsForm" (ngSubmit)="submitForm()" style="margin: 0px;">
+                <div class="mb-1">
+                  <label for="username" class="form-label text-white mt-3">Enter customer name</label>
+                  <input type="text" class="form-control" formControlName="name" (keydown)="validateNameInput($event)" id="username">
+                  <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="error-text">Name is required.</div>
+                </div>
+      
+                <div class="mb-3">
+                  <label for="number" class="form-label text-white mt-3">Enter mobile number</label>
+                  <input type="tele" class="form-control" formControlName="number" (keydown)="validateNumberInput($event)" id="number" maxlength="10">
+                  <div *ngIf="number?.invalid && number?.hasError('required') && (number?.dirty || number?.touched)" class="error-text">Mobile Number is required.</div>
+                  <div *ngIf="number?.invalid && number?.hasError('pattern') && (number?.dirty || number?.touched)" class="error-text">Number must be 10 digits.</div>
+                  <div id="msg" class="form-text note-text text-white">NOTE: We'll never share the number with anyone.</div>
+                </div>      
+                <button type="submit" class="btn mb-4 order-btn btn-primary" [disabled]="!userDetailsForm.valid ">Get OTP</button>        
+                <div id="sign-in-button"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>      
+</body>
