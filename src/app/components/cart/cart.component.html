@@ -79,7 +79,7 @@
     <div *ngIf="data_Response == 'next' "><app-payment></app-payment></div>
 
 
-    <section id="combo" *ngIf="totalAmount >= 220" >
+    <section id="combo" *ngIf="totalAmount >= 199" >
         <div class="container mt-2" style="margin-top: -40px !important; margin-bottom: 74px;">
           <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-3 mt-3">
             <ng-container *ngFor="let item of filterCategory ">
@@ -96,7 +96,7 @@
                       </h3>
                       <br>
                       <h6 class="" style="color: white; margin-top: -30px;">
-                        <!-- <s>Rs: {{item.old_price}}/</s> -->
+                        <s>Rs: {{item.old_price}}/</s>
                         <strong>&nbsp;&nbsp;Rs:{{ item.new_price }}/-</strong>
                       </h6>
                       <br>

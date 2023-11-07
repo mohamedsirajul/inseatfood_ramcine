@@ -5,11 +5,13 @@
     backdrop-filter: blur(1.5px);
     -webkit-backdrop-filter: blur(1.5px);
     border: 1px solid rgba(255, 255, 255, 0.41);
-    transform: translateY(70px); /* Initial transform position */
+    transform: translateY(70px); 
 
 }
 
-  /* Add these styles to animate the card when "aos-animate" class is present */
+
+
+
   .card.aos-init.aos-animate {
     transition: transform 0.5s ease, opacity 0.3s ease;
     transform: translateY(0);
@@ -65,6 +67,7 @@
     text-align: center;
     color: white;
 }
+
 .seartbox{
     border-color: #ff2c2c;
 }

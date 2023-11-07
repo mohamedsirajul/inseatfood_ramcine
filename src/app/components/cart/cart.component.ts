@@ -9,7 +9,6 @@ import { OrderStatusService } from 'src/app/services/order-status.service';
 import { SpinnerService } from 'src/app/services/spinner.service';
 import { PaymentService } from 'src/app/services/payment.service';
 
-
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -52,12 +51,12 @@ export class CartComponent implements OnInit {
 
     this.filterCategory = [
       {
-        name : "Water Bottel",
-        image: "https://inseatfood.in/ram/ram/waterbottle.webp",
+        name: 'Water Bottel',
+        image: 'https://inseatfood.in/ram/ram/waterbottle.webp',
         new_price: 30,
-        old_price: 15
-      }
-    ]
+        old_price: 15,
+      },
+    ];
 
     this.filterCategory.forEach((a: any) => {
       Object.assign(a, { quantity: 0, total: a.new_price });
@@ -84,7 +83,7 @@ export class CartComponent implements OnInit {
         background: '#1a1a1a',
         iconColor: 'white',
         showConfirmButton: false,
-        timer: 1000
+        timer: 1000,
       });
       return;
     } else {
@@ -112,19 +111,8 @@ export class CartComponent implements OnInit {
           }
         });
       } else {
-
-
-        if (this.totalAmount >= 220) {
-
-          const itemToAdd = JSON.parse(JSON.stringify(item)); // Make a deep copy of the item
-          this.cartService.add_cart(itemToAdd); // Add the deep copy to the cart
-
-          // this.cartService.clearCart();
-          // this.cartItems = [];
-        } else {
-          // Otherwise, update the total amount
-          this.totalAmount;
-        }
+        const itemToAdd = JSON.parse(JSON.stringify(item)); // Make a deep copy of the item
+        this.cartService.add_cart(itemToAdd); // Add the deep copy to the cart
 
         Swal.fire({
           icon: 'success',
@@ -132,29 +120,34 @@ export class CartComponent implements OnInit {
           showConfirmButton: false,
           background: '#1a1a1a',
           iconColor: 'white',
-          timer: 1000
+          timer: 1000,
         });
       }
     }
   }
 
   updateCartItems() {
-    this.cartItems = this.cartService.getCartItems();    
+    this.cartItems = this.cartService.getCartItems();
     this.calculateTotalAmount();
   }
 
   calculateTotalAmount() {
     let total = 0;
     for (const item of this.cartItems) {
-      // this.price = item.new_price
-      // this.quantity = item.quantity
       item.total = item.new_price * item.quantity;
-
       total += item.total;
     }
     this.totalAmount = total;
+
+    if (this.totalAmount <= 199) {
+      const waterBottleIndex = this.cartItems.findIndex((cartItem) => cartItem.name === 'Water Bottel');
+      if (waterBottleIndex !== -1) {
+        this.totalAmount -= this.cartItems[waterBottleIndex].new_price * this.cartItems[waterBottleIndex].quantity;
+        this.cartItems.splice(waterBottleIndex, 1);
+      }
+    }
+
     console.log(this.totalAmount);
-    
   }
 
   updateCounter() {
@@ -162,9 +155,8 @@ export class CartComponent implements OnInit {
   }
 
   removeItem(item: any) {
-
     Swal.fire({
-      title: "<h1 style='color:white'>" + 'Are you sure?' + "</h1>",
+      title: "<h1 style='color:white'>" + 'Are you sure?' + '</h1>',
       html: "<h5 style='color:white'>" + 'Do you want to remove this item from the cart?' + '</h5>',
       icon: 'warning',
       showCancelButton: true,
@@ -177,7 +169,12 @@ export class CartComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         if (item) {
-          this.item = item
+          const itemIndex = this.cartItems.findIndex((cartItem) => cartItem.name === item.name);
+          if (itemIndex !== -1) {
+            this.totalAmount -= this.cartItems[itemIndex].new_price * this.cartItems[itemIndex].quantity;
+            this.cartItems.splice(itemIndex, 1);
+          }
+          this.item = item;
           this.cartService.removeCartItem(item);
           this.cartItems = this.cartService.getCartItems();
           this.calculateTotalAmount();
@@ -192,18 +189,15 @@ export class CartComponent implements OnInit {
           showConfirmButton: false,
           background: '#1a1a1a',
           iconColor: 'white',
-          timer: 1000
+          timer: 1000,
         });
       }
     });
   }
 
-
- 
   emptyCart() {
-   
     Swal.fire({
-      title: "<h1 style='color:white'>" + 'Are you sure?' + "</h1>",
+      title: "<h1 style='color:white'>" + 'Are you sure?' + '</h1>',
       html: "<h5 style='color:white'>" + 'Do you want to remove all the item from the cart?' + '</h5>',
       icon: 'warning',
       showCancelButton: true,
@@ -226,12 +220,11 @@ export class CartComponent implements OnInit {
           showConfirmButton: false,
           background: '#1a1a1a',
           iconColor: 'white',
-          timer: 2000
+          timer: 2000,
         });
       }
     });
   }
-
 
   increaseCounter(item: any) {
     item.quantity++;
@@ -246,42 +239,38 @@ export class CartComponent implements OnInit {
   confirmOrder() {
     if (this.cartService.getCartItems().length > 0) {
       this.spinnerService.showSpinner();
-      this.order_details.setCartItems(this.cartService.getCartItems())
-           .subscribe(  
-            (response) => {
+      this.order_details.setCartItems(this.cartService.getCartItems()).subscribe(
+        (response) => {
+          this.data_Response = response;
+          console.log(this.data_Response);
 
-              this.data_Response = response;
-              console.log(this.data_Response);
-              
-              this.redirectURL = response.external_response.data.instrumentResponse.redirectInfo.url;
-              console.log(this.data_Response);
-              
-              this.SVC.getResponse = this.data_Response;
+          this.redirectURL = response.external_response.instrumentResponse.redirectInfo.url;
+          
+          console.log(this.data_Response);
 
-              this.orderStatusService.setOrderPlacedStatus(true);
+          this.SVC.getResponse = this.data_Response;
 
-              this.spinnerService.hideSpinner();
-         
-              window.location.replace(this.redirectURL!);
-              this.cartService.clearCart();
-              this.cartItems = [];
-              this.totalAmount = 0;
-              this.updateCounter();
+          this.orderStatusService.setOrderPlacedStatus(true);
 
+          this.spinnerService.hideSpinner();
 
-            },
-            (error) => {
-              console.error('Failed to place order:', error);
+          window.location.replace(this.redirectURL!);
+          this.cartService.clearCart();
+          this.cartItems = [];
+          this.totalAmount = 0;
+          this.updateCounter();
+        },
+        (error) => {
+          console.error('Failed to place an order:', error);
+          console.log('Error response from the server:', error.error);
 
-              console.log('Error response from server:', error.error);
+          this.toastr.error('Failed to place an order. Please try again later.', 'Error');
+        }
+      );
+    } else {
+      console.warn('Cannot place an order with an empty cart');
 
-              this.toastr.error('Failed to place order. Please try again later.', 'Error');
-            }
-          );
-      } else {
-        console.warn('Cannot place order with an empty cart');
-
-        this.toastr.warning('Your cart is empty. Add items before placing an order.', 'Warning');
-      }
+      this.toastr.warning('Your cart is empty. Add items before placing an order.', 'Warning');
     }
   }
+}

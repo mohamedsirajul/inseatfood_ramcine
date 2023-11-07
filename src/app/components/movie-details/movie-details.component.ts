@@ -12,7 +12,7 @@ import { SpinnerService } from 'src/app/services/spinner.service';
 export class MovieDetailsComponent {
 
   // movieDetailsForm: FormGroup;
-  movieNames: any[] = ['Irugapatru',];
+  movieNames: any[] = ['Leo'];
   mve_time: any[] = [
     '11:30 AM',
     '02:45 PM',
@@ -89,42 +89,39 @@ export class MovieDetailsComponent {
     this.selectedmve_time = this.mve_time[0]
     this.selectedSeat = null
     this.radioItems = ['Balcony A', 'Balcony B', 'Platinum' , 'Gold'];
-    this.filterMovieTimes();
+    // this.filterMovieTimes();
 
   }
   
-  filterMovieTimes() {
-    const currentTimeString = this.currentTime.toLocaleTimeString('en-US', { hour12: false });
-    const currentHour = parseInt(currentTimeString.slice(0, 2), 10);
-    const currentMinutes = parseInt(currentTimeString.slice(3, 5), 10);
-    const currentTimeInMinutes = currentHour * 60 + currentMinutes;
+  // filterMovieTimes() {
+  //   const currentTimeString = this.currentTime.toLocaleTimeString('en-US', { hour12: false });
+  //   const currentHour = parseInt(currentTimeString.slice(0, 2), 10);
+  //   const currentMinutes = parseInt(currentTimeString.slice(3, 5), 10);
+  //   const currentTimeInMinutes = currentHour * 60 + currentMinutes;
   
-    // Filter out movie times that have already passed
-    // console.log(this.mve_time);
     
-    for(let i=1; i<this.mve_time.length; i++){
-      // console.log(this.mve_time[i]);
-      this.mvedetails.push(this.mve_time[i])
-    }
-    console.log(this.mvedetails);
+  //   for(let i=1; i<this.mve_time.length; i++){
+  //     this.mvedetails.push(this.mve_time[i])
+  //   }
+  //   console.log(this.mvedetails);
 
 
-    this.mve_time = this.mve_time.filter(time => {
-      const [timePart, amPm] = time.split(' ');
-      const [hour, minutes] = timePart.split(':').map(Number);
+  //   this.mve_time = this.mve_time.filter(time => {
+  //     const [timePart, amPm] = time.split(' ');
+  //     const [hour, minutes] = timePart.split(':').map(Number);
   
-      // Convert to 24-hour format if it's PM
-      const adjustedHour = amPm === 'PM' && hour !== 12 ? hour + 12 : hour;
+  //     // Convert to 24-hour format if it's PM
+  //     const adjustedHour = amPm === 'PM' && hour !== 12 ? hour + 12 : hour;
   
-      const movieTimeInMinutes = adjustedHour * 60 + minutes;
-      return movieTimeInMinutes >= currentTimeInMinutes;
-    });
+  //     const movieTimeInMinutes = adjustedHour * 60 + minutes;
+  //     return movieTimeInMinutes >= currentTimeInMinutes;
+  //   });
   
-    // Set the default selected time
-    if (this.mve_time.length > 0) {
-      this.selectedmve_time = this.mve_time[0];
-      console.log(this.mve_time);
-    }
-  }
+    
+  //   if (this.mve_time.length > 0) {
+  //     this.selectedmve_time = this.mve_time[0];
+  //     console.log(this.mve_time);
+  //   }
+  // }
    
 }
